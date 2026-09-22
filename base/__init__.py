@@ -64,6 +64,10 @@ class custom_session(requests.Session):
         self.POST_RATE_LIMIT = post_rate_limit
         self.last_request_time = 0
 
+        # Cloudflare blocks the default python-requests UA on some scraper
+        # hosts (e.g. torrentio.strem.fun returns 403); use a browser UA.
+        self.headers.update({'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36'})
+
     def request(self, method, url, **kwargs):
         """Override the request method to include rate limiting, retries, and default timeout.
 
